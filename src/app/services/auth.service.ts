@@ -3,12 +3,24 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { catchError, map, of, tap } from 'rxjs';
 import { JwtService } from './jwt.service';
 
+export type UserRole = 'student' | 'teacher';
+
 export interface User {
   id: string;
   firstName: string;
   lastName: string;
   picture: string;
   fullName: string;
+  role: UserRole;
+}
+
+export interface RegisterData {
+  firstName: string;
+  lastName: string;
+  picture: string;
+  role: UserRole;
+  username: string;
+  password: string;
 }
 
 @Injectable({
@@ -23,6 +35,14 @@ export class AuthService {
 
   isAuthenticated = computed(() => {
     return !!this.currentUser();
+  });
+
+  isTeacher = computed(() => {
+    return this.currentUser()?.role === 'teacher';
+  });
+
+  isStudent = computed(() => {
+    return this.currentUser()?.role === 'student';
   });
 
   constructor() {
@@ -47,6 +67,10 @@ export class AuthService {
         map(res => res.user),
         tap(user => this._currentUser.set(user))
       );
+  }
+
+  register(data: RegisterData) {
+    return this.http.post<User>('/api/register', data);
   }
 
   logout() {
