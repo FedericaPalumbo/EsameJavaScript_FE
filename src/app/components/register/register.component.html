@@ -1,0 +1,56 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col col-lg-4"></div>
+
+        <div class="col col-lg-4 col-md-12 border rounded p-4">
+            <form [formGroup]="registerForm" (ngSubmit)="register()">
+                <div class="form-outline mb-4">
+                    <label class="form-label">Nome</label>
+                    <input class="form-control" type="text" formControlName="firstName">
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label class="form-label">Cognome</label>
+                    <input class="form-control" type="text" formControlName="lastName">
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label class="form-label">Immagine profilo (URL)</label>
+                    <input class="form-control" type="url" formControlName="picture">
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label class="form-label">Ruolo</label>
+                    <select class="form-select" formControlName="role">
+                        <option value="" disabled>Seleziona un ruolo</option>
+                        <option value="teacher">Docente</option>
+                        <option value="student">Studente</option>
+                    </select>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label class="form-label">Email</label>
+                    <input class="form-control" type="email" formControlName="username">
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label class="form-label">Password</label>
+                    <input class="form-control" type="password" formControlName="password">
+                </div>
+                <div class="text-danger">
+                    {{ errorMessage() }}
+                </div>
+
+                <div class="text-center">
+                    <button [disabled]="registerForm.invalid" type="submit"
+                        class="btn btn-primary btn-block mb-4">Registrati</button>
+                </div>
+
+                <div class="text-center">
+                    <a routerLink="/login">Hai già un account? Accedi</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
