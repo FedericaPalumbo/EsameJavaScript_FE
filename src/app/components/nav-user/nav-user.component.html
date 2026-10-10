@@ -1,0 +1,10 @@
+<li class="nav-item" ngbDropdown display="dynamic" placement="bottom-end">
+    <a class="nav-link p-0" tabindex="0" ngbDropdownToggle role="button">
+        <img [src]="user().picture" class="nav-user-avatar">
+        {{ user().fullName }}
+        <span class="badge text-bg-light ms-1">{{ user().role === 'teacher' ? 'Docente' : 'Studente' }}</span>
+    </a>
+    <div ngbDropdownMenu class="dropdown-menu">
+        <a ngbDropdownItem (click)="logout()">Logout</a>
+    </div>
+</li>

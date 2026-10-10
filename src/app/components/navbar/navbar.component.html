@@ -1,0 +1,29 @@
+<nav class="navbar bg-primary navbar-expand">
+
+    <div class="container-fluid">
+        <a class="navbar-brand" [routerLink]="['/']">
+            ITS-CLASSROOM
+        </a>
+        <div class="navbar-collapse justify-content-between">
+            <ul class="navbar-nav">
+                <li class="nav-item" *ifAuthenticated>
+                    <a class="nav-link" routerLinkActive="active" routerLink="/classrooms">Classi</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <ul class="navbar-nav">
+
+                    <app-nav-user *ifAuthenticated="true; else loginBtn" [user]="currentUser()!"
+                        (logout)="logout()"></app-nav-user>
+
+                    <ng-template #loginBtn>
+                        <li class="nav-item">
+                            <a class="nav-link" routerLinkActive="active" routerLink="/login">Login</a>
+                        </li>
+                    </ng-template>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

@@ -1,38 +1,26 @@
 import { Routes } from '@angular/router';
-import { CheckoutComponent } from './pages/checkout/checkout.component';
-import { ProductListComponent } from './pages/product-list/product-list.component';
-import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
-import { ProductContainerComponent } from './pages/product-container/product-container.component';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { ClassroomListComponent } from './pages/classroom-list/classroom-list.component';
 import { authGuard } from './utils/auth.guard';
 
 export const routes: Routes = [
   {
-    path: 'checkout',
-    component: CheckoutComponent,
+    path: 'classrooms',
+    component: ClassroomListComponent,
     canActivate: [authGuard]
-  },
-  {
-    path: 'products',
-    component: ProductContainerComponent,
-    children: [
-      {
-        path: '',
-        component: ProductListComponent
-      },
-      {
-        path: ':id',
-        component: ProductDetailComponent
-      }
-    ]
   },
   {
     path: 'login',
     component: LoginComponent
   },
   {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
     path: '',
-    redirectTo: '/products',
+    redirectTo: '/classrooms',
     pathMatch: 'full'
   }
 ];
