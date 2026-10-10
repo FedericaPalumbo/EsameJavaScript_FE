@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { catchError, map, of, tap } from 'rxjs';
 import { JwtService } from './jwt.service';
-
-export type UserRole = 'student' | 'teacher';
+import { UserRole } from '../entities';
 
 export interface User {
   id: string;
