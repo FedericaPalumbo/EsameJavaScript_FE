@@ -1,1 +1,13 @@
-<p>classroom-list works!</p>
+@if (isTeacher()) {
+<div class="d-flex justify-content-end mt-4">
+    <button class="btn btn-primary" (click)="navigateToCreate()">Nuova classe</button>
+</div>
+}
+
+<div class="row row-cols-1 row-cols-md-4 g-6 mt-5">
+    @for (classroom of classrooms$ | async; track classroom.id) {
+    <div class="col">
+        <app-classroom-card [classroom]="classroom" (onDetail)="navigateToDetail(classroom.id)" />
+    </div>
+    }
+</div>
