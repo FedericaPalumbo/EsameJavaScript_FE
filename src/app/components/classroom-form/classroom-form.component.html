@@ -1,0 +1,31 @@
+<form [formGroup]="classroomForm" (ngSubmit)="submit()">
+    <div class="mb-4">
+        <label class="form-label">Nome della classe</label>
+        <input type="text" class="form-control" placeholder="Nome classe" formControlName="name"
+            [class.is-invalid]="classroomForm.controls.name.invalid && classroomForm.controls.name.touched">
+        <div class="invalid-feedback">Il nome è obbligatorio</div>
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label">Studenti</label>
+        <div class="list-group student-list">
+            @for (student of students(); track student.id) {
+            <label class="list-group-item d-flex align-items-center gap-2">
+                <input type="checkbox" class="form-check-input mt-0" [checked]="isSelected(student.id)"
+                    (change)="toggleStudent(student.id)">
+                {{ student.fullName }}
+            </label>
+            } @empty {
+            <div class="list-group-item text-muted">Nessuno studente disponibile</div>
+            }
+        </div>
+        <div class="form-text"
+            [class.text-danger]="classroomForm.controls.students.invalid && classroomForm.controls.students.touched">
+            Seleziona almeno uno studente
+        </div>
+    </div>
+
+    <div class="text-end">
+        <button [disabled]="classroomForm.invalid" type="submit" class="btn btn-primary">Crea classe</button>
+    </div>
+</form>
