@@ -4,7 +4,11 @@ import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject, catchError, combineLatest, map, of, switchMap, take, tap } from 'rxjs';
 import { AssignmentService } from '../../services/assignment.service';
 import { AssignmentItemComponent } from '../../components/assignment-item/assignment-item.component';
+/*AssignmentListComponent è la pagina della classe, quella che nel README si chiama “Pagina attività (o pagina della classe)”. Si apre quando premi “dettagli” su una classe nella lista, all’indirizzo /classrooms/:id.
 
+Il suo compito è mostrare tutte le attività di quella classe. Prende l’id dall’URL, chiede al backend le attività (GET /api/classrooms/:id/assignments) e le stampa una per una. Per ogni attività usa assignment-item, che fa vedere titolo, data di creazione e quanti studenti l’hanno completata.
+
+Quando uno studente preme “Completa” su un’attività, la pagina chiama il backend (PATCH) e poi ricarica la lista, così il contatore e il pulsante si aggiornano subito. */
 @Component({
     selector: 'app-assignment-list',
     imports: [
