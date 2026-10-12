@@ -1,24 +1,30 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { User } from '../../services/auth.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from '../../services/user.service';
 
 export type ClassroomFormEvent = {
     name: string,
     students: string[]
 }
 
+/* ClassroomFormComponent è il contenuto del modal di creazione classe.
+Non viene messo nel template di nessuna pagina: lo apre ClassroomAddPulsanteComponent tramite NgbModal.
+NgbActiveModal rappresenta il modal "attualmente aperto": serve per chiuderlo (close) e restituire il risultato a chi l'ha aperto.
+La lista degli studenti selezionabili la carica il form stesso (GET /api/users?type=student). */
 @Component({
     selector: 'app-classroom-form',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, AsyncPipe],
     templateUrl: './classroom-form.component.html',
     styleUrl: './classroom-form.component.css',
 })
 export class ClassroomFormComponent {
     protected fb = inject(FormBuilder);
+    protected userSrv = inject(UserService);
+    activeModal = inject(NgbActiveModal);
 
-    students = input<User[]>([]);
-
-    onSubmit = output<ClassroomFormEvent>();
+    students$ = this.userSrv.find('student');
 
     classroomForm = this.fb.group({
         name: new FormControl<string>('', {
@@ -47,9 +53,10 @@ export class ClassroomFormComponent {
     }
 
     submit() {
-        if (this.classroomForm.valid) {
-            const { name, students } = this.classroomForm.getRawValue();
-            this.onSubmit.emit({ name: name.trim(), students });
-        }
+        // il pulsante è disabilitato se il form non è valido, ma controllo anche qui
+        if (this.classroomForm.invalid) return;
+
+        const { name, students } = this.classroomForm.getRawValue();
+        this.activeModal.close({ name: name.trim(), students } as ClassroomFormEvent);
     }
 }

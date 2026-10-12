@@ -3,16 +3,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ClassroomListComponent } from './pages/classroom-list/classroom-list.component';
 import { authGuard } from './utils/auth.guard';
-import { ClassroomCreateComponent } from './pages/classroom-create/classroom-create.component';
-import { roleGuard } from './utils/role.guard';
 import { AssignmentListComponent } from './pages/assignment-list/assignment-list.component';
 
 export const routes: Routes = [
-  {
-    path: 'classrooms/new',
-    component: ClassroomCreateComponent,
-    canActivate: [authGuard, roleGuard] //Ordine dei guard: authGuard prima di roleGuard, quindi chi non è loggato va al login e solo dopo viene controllato il ruolo.
-  },
   {
     path: 'classrooms/:id',
     component: AssignmentListComponent,

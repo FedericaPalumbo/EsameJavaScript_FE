@@ -1,6 +1,10 @@
 <div class="d-flex justify-content-end mt-4" *ifRole="'teacher'">
-    <button class="btn btn-primary" (click)="navigateToCreate()">Nuova classe</button>
+    <app-classroom-addpulsante (onAdd)="create($event)" />
 </div>
+
+@if (errorMessage()) {
+<div class="alert alert-danger mt-3" role="alert">{{ errorMessage() }}</div>
+}
 
 <div class="row row-cols-1 row-cols-md-4 g-6 mt-5">
     @for (classroom of classrooms$ | async; track classroom.id) {
