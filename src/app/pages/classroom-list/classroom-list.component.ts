@@ -2,14 +2,15 @@ import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ClassroomService } from '../../services/classroom.service';
-import { AuthService } from '../../services/auth.service';
 import { ClassroomCardComponent } from '../../components/classoom-card/classroom-card.component';
+import { IfRoleDirective } from '../../utils/if-role.directive';
 
 @Component({
   selector: 'app-classroom-list',
   imports: [
     ClassroomCardComponent,
     AsyncPipe,
+    IfRoleDirective,
   ],
   templateUrl: './classroom-list.component.html',
   styleUrl: './classroom-list.component.css',
@@ -17,9 +18,6 @@ import { ClassroomCardComponent } from '../../components/classoom-card/classroom
 export class ClassroomListComponent {
   protected classroomSrv = inject(ClassroomService);
   protected router = inject(Router);
-  protected authSrv = inject(AuthService);
-
-  isTeacher = this.authSrv.isTeacher;
 
   classrooms$ = this.classroomSrv.find();
 

@@ -8,6 +8,11 @@ import { roleGuard } from './utils/role.guard';
 
 export const routes: Routes = [
   {
+    path: 'classrooms/new',
+    component: ClassroomCreateComponent,
+    canActivate: [authGuard, roleGuard] //Ordine dei guard: authGuard prima di roleGuard, quindi chi non è loggato va al login e solo dopo viene controllato il ruolo.
+  },
+  {
     path: 'classrooms',
     component: ClassroomListComponent,
     canActivate: [authGuard]
@@ -25,9 +30,5 @@ export const routes: Routes = [
     redirectTo: '/classrooms',
     pathMatch: 'full'
   },
-  {
-    path: 'classrooms/new',
-    component: ClassroomCreateComponent,
-    canActivate: [authGuard, roleGuard] //Ordine dei guard: authGuard prima di roleGuard, quindi chi non è loggato va al login e solo dopo viene controllato il ruolo.
-  },
+
 ];
