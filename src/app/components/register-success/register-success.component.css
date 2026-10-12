@@ -1,0 +1,15 @@
+.success-header {
+    background-color: #8bc34a;
+    padding: 2rem 1rem;
+    border-radius: var(--bs-modal-inner-border-radius) var(--bs-modal-inner-border-radius) 0 0;
+}
+
+.success-icon {
+    width: 4rem;
+    height: 4rem;
+    line-height: 3.5rem;
+    margin: 0 auto;
+    font-size: 2rem;
+    border: 3px solid #fff;
+    border-radius: 50%;
+}

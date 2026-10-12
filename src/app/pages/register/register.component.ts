@@ -2,9 +2,11 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { UserRole } from '../../entities';
-import { catchError, throwError } from 'rxjs';
+import { catchError, switchMap, throwError } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RegisterSuccessComponent } from '../../components/register-success/register-success.component';
 
 @Component({
     selector: 'app-register',
@@ -17,6 +19,7 @@ export class RegisterComponent {
     protected authSrv = inject(AuthService);
     private destroyRef = inject(DestroyRef);
     private router = inject(Router);
+    private modalService = inject(NgbModal);
 
     registerForm = this.fb.group({
         firstName: ['', { validators: [Validators.required] }],
@@ -47,15 +50,26 @@ export class RegisterComponent {
                 password: password!
             })
                 .pipe(
+                    // registrazione riuscita: faccio subito il login con le stesse credenziali,
+                    // così l'utente entra senza passare dalla pagina di login
+                    switchMap(() => this.authSrv.login(username!, password!)),
                     catchError(response => {
                         const message = response.error.message;
                         this.errorMessage.set(message);
                         return throwError(() => response);
                     })
                 )
-                .subscribe(() => {
-                    this.router.navigate(['/login']);
-                });
+                .subscribe(() => this.openSuccessModal());
         }
+    }
+
+    // mostra il modal di successo e, alla chiusura ("Continua" o click fuori), porta l'utente alla lista classi
+    private openSuccessModal() {
+        const modalRef = this.modalService.open(RegisterSuccessComponent, { centered: true });
+
+        modalRef.result.then(
+            () => this.router.navigate(['/classrooms']),
+            () => this.router.navigate(['/classrooms'])
+        );
     }
 }
