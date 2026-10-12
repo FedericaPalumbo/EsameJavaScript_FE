@@ -3,6 +3,10 @@
 
             <h2 class="mt-3">Attività</h2>
 
+            <div class="d-flex justify-content-end mb-3" *ifRole="'teacher'">
+                <app-assignment-addpulsante (onAdd)="create($event)" />
+            </div>
+
             <div class="text-danger">
                 {{ errorMessage() }}
             </div>
