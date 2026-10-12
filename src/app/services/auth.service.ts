@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { catchError, map, of, tap } from 'rxjs';
+import { catchError, finalize, map, Observable, of, shareReplay, tap } from 'rxjs';
 import { JwtService } from './jwt.service';
 import { UserRole } from '../entities';
 
@@ -29,6 +29,9 @@ export class AuthService {
   protected http = inject(HttpClient);
   protected jwtSrv = inject(JwtService);
 
+  // richiesta di fetchUser() in corso: condivisa tra chi la chiama (constructor e guard)
+  protected pendingFetch$: Observable<User | null> | null = null;
+
   protected _currentUser = signal<User | null>(null);
   currentUser = this._currentUser.asReadonly();
 
@@ -48,15 +51,20 @@ export class AuthService {
     this.fetchUser().subscribe();
   }
 
-  fetchUser() {
-    return this.http.get<User>('/api/users/me')
-      .pipe(
-        catchError(() => {
-          this.jwtSrv.removeToken();
-          return of(null)
-        }),
-        tap(user => this._currentUser.set(user))
-      )
+  fetchUser(): Observable<User | null> {
+    if (!this.pendingFetch$) {
+      this.pendingFetch$ = this.http.get<User>('/api/users/me')
+        .pipe(
+          catchError(() => {
+            this.jwtSrv.removeToken();
+            return of(null)
+          }),
+          tap(user => this._currentUser.set(user)),
+          finalize(() => this.pendingFetch$ = null),
+          shareReplay(1)
+        );
+    }
+    return this.pendingFetch$;
   }
 
   login(username: string, password: string) {

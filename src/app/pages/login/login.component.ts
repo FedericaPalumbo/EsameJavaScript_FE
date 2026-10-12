@@ -1,6 +1,7 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { JwtService } from '../../services/jwt.service';
 import { catchError, of, Subject, throwError } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -14,6 +15,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 export class LoginComponent {
     protected fb = inject(FormBuilder);
     protected authSrv = inject(AuthService);
+    private jwtSrv = inject(JwtService);
     private destroyRef = inject(DestroyRef);
     private router = inject(Router);
     private activatedRoute = inject(ActivatedRoute);
@@ -26,6 +28,20 @@ export class LoginComponent {
     errorMessage = signal<string | null>(null);
 
     ngOnInit() {
+        // Se l'utente è già autenticato non ha senso mostrare il login
+        if (this.authSrv.isAuthenticated()) {
+            this.router.navigate(['/classrooms']);
+        } else if (this.jwtSrv.hasToken()) {
+            // Refresh della pagina: aspetto che l'utente venga caricato
+            this.authSrv.fetchUser()
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe(user => {
+                    if (user) {
+                        this.router.navigate(['/classrooms']);
+                    }
+                });
+        }
+
         this.loginForm.valueChanges
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => this.errorMessage.set(null))
@@ -43,7 +59,7 @@ export class LoginComponent {
                     })
                 )
                 .subscribe(() => {
-                    const dest = this.activatedRoute.snapshot.queryParams['dest'] || '/products';
+                    const dest = this.activatedRoute.snapshot.queryParams['dest'] || '/classrooms';
                     this.router.navigate([dest]);
                 });
         }

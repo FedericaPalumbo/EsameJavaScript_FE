@@ -36,5 +36,8 @@ export const routes: Routes = [
     redirectTo: '/classrooms',
     pathMatch: 'full'
   },
-
+  {
+    path: '**',
+    redirectTo: '/classrooms'
+  }
 ];
