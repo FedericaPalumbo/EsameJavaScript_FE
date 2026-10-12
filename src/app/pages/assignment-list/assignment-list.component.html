@@ -1,0 +1,13 @@
+<div class="container mt-4">
+    <a [routerLink]="['/classrooms']"><- Torna alle classi</a>
+
+            <h2 class="mt-3">Attività</h2>
+
+            <div class="text-danger">
+                {{ errorMessage() }}
+            </div>
+
+            @for (assignment of assignments$ | async; track assignment.id) {
+            <app-assignment-item [assignment]="assignment" (onComplete)="complete(assignment.id)" />
+            }
+</div>
