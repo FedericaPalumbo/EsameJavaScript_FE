@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ClassroomService } from '../../services/classroom.service';
-import { ClassroomCardComponent } from '../../components/classoom-card/classroom-card.component';
+import { ClassroomCardComponent } from '../../components/classroom-card/classroom-card.component';
 import { IfRoleDirective } from '../../utils/if-role.directive';
 
 @Component({
