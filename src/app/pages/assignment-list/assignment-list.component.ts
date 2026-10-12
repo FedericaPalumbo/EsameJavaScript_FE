@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject, catchError, combineLatest, EMPTY, map, of, switchMap, take, tap } from 'rxjs';
 import { AssignmentService } from '../../services/assignment.service';
@@ -13,7 +14,12 @@ Il suo compito è mostrare tutte le attività di quella classe. Prende l’id da
 
 Se l’utente è il docente, sopra la lista c’è il pulsante “Nuova attività”, che apre un modal con il form: alla conferma la pagina chiama il backend (POST) e ricarica la lista.
 
-Quando uno studente preme “Completa” su un’attività, la pagina chiama il backend (PATCH) e poi ricarica la lista, così il contatore e il pulsante si aggiornano subito. */
+Quando uno studente preme “Completa” su un’attività, la pagina chiama il backend (PATCH) e poi ricarica la lista, così il contatore e il pulsante si aggiornano subito.
+
+Gestione degli errori del backend:
+- 404 (la classe non esiste, non è del docente che la apre o lo studente non è iscritto): la pagina non ha niente da mostrare, quindi si torna alla lista delle classi (/classrooms)
+- 400 al completamento (l'attività risulta già completata dall'utente, ad esempio da un'altra scheda): messaggio all'utente e lista ricaricata, così il pulsante “Completa” sparisce
+- qualunque altro errore: messaggio mostrato sopra la lista */
 @Component({
     selector: 'app-assignment-list',
     imports: [
@@ -28,6 +34,7 @@ Quando uno studente preme “Completa” su un’attività, la pagina chiama il 
 })
 export class AssignmentListComponent {
     protected activatedRoute = inject(ActivatedRoute);
+    protected router = inject(Router);
     protected assignmentSrv = inject(AssignmentService);
 
     errorMessage = signal<string | null>(null);
@@ -48,7 +55,7 @@ export class AssignmentListComponent {
         switchMap(([classroomId]) => this.assignmentSrv.find(classroomId)
             .pipe(
                 catchError(response => {
-                    this.errorMessage.set(response.error.message);
+                    this.handleError(response);
                     return of([]);
                 })
             )
@@ -62,7 +69,7 @@ export class AssignmentListComponent {
                 take(1),
                 switchMap(classroomId => this.assignmentSrv.create(classroomId, assignment)),
                 catchError(response => {
-                    this.errorMessage.set(response.error.message);
+                    this.handleError(response);
                     return EMPTY;
                 })
             )
@@ -75,10 +82,32 @@ export class AssignmentListComponent {
         this.classroomId$
             .pipe(
                 take(1),
-                switchMap(classroomId => this.assignmentSrv.complete(classroomId, id))
+                switchMap(classroomId => this.assignmentSrv.complete(classroomId, id)),
+                catchError(response => {
+                    if (response.status === 400) {
+                        // già completata: ricarico la lista così il pulsante sparisce.
+                        // reload$.next() azzera errorMessage (tap della lista), quindi il messaggio va impostato dopo
+                        this.reload$.next();
+                        this.errorMessage.set('Hai già completato questa attività');
+                    } else {
+                        this.handleError(response);
+                    }
+                    return EMPTY;
+                })
             )
             .subscribe(() => {
                 this.reload$.next();
             });
+    }
+
+    // errori comuni a find, create e complete
+    private handleError(response: HttpErrorResponse) {
+        if (response.status === 404) {
+            // replaceUrl: la pagina non valida non resta nella cronologia, il tasto indietro non ci riporta qui
+            this.router.navigate(['/classrooms'], { replaceUrl: true });
+        } else {
+            // se manca il messaggio del BE (ad esempio server spento, status 0) uso un testo generico
+            this.errorMessage.set(response.error?.message ?? 'Si è verificato un errore, riprova più tardi');
+        }
     }
 }
