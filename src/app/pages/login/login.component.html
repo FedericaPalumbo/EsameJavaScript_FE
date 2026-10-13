@@ -11,7 +11,13 @@
 
                 <div class="form-outline mb-4">
                     <label class="form-label">Password</label>
-                    <input class="form-control" type="password" formControlName="password">
+                    <div class="input-group">
+                        <input #pwd class="form-control" type="password" formControlName="password">
+                        <button class="btn btn-outline-secondary" type="button"
+                            (click)="pwd.type = pwd.type === 'password' ? 'text' : 'password'">
+                            {{ pwd.type === 'password' ? 'Mostra' : 'Nascondi' }}
+                        </button>
+                    </div>
                 </div>
                 <div class="text-danger">
                     {{ errorMessage() }}
