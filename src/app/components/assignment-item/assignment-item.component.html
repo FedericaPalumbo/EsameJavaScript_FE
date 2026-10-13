@@ -1,6 +1,6 @@
 <div class="card mt-2">
     <div class="card-body">
-        <h5 class="card-title">{{ assignment().title }}</h5>
+        <h5 class="card-title fw-normal">{{ assignment().title }}</h5>
         <h6 class="card-subtitle mb-2 text-muted">{{ assignment().createdAt | date: 'longDate' }}</h6>
         <p class="card-text mb-1">Completata da {{ assignment().completedCount }}/{{ assignment().studentsCount }}
             studenti</p>

@@ -8,8 +8,10 @@
         <div class="mb-3">
             <label class="form-label">Nome della classe</label>
             <input type="text" class="form-control" placeholder="Nome classe" formControlName="name"
+                [maxlength]="nameMaxLength"
                 [class.is-invalid]="classroomForm.controls.name.invalid && classroomForm.controls.name.touched">
             <div class="invalid-feedback">Il nome è obbligatorio</div>
+            <div class="form-text">Massimo {{ nameMaxLength }} caratteri</div>
         </div>
 
         <div class="mb-3">

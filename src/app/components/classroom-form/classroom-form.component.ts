@@ -4,6 +4,9 @@ import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angu
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../services/user.service';
 
+// lunghezza massima del nome della classe (stesso valore del DTO nel backend)
+export const CLASSROOM_NAME_MAX_LENGTH = 30;
+
 export type ClassroomFormEvent = {
     name: string,
     students: string[]
@@ -24,13 +27,15 @@ export class ClassroomFormComponent {
     protected userSrv = inject(UserService);
     activeModal = inject(NgbActiveModal);
 
+    nameMaxLength = CLASSROOM_NAME_MAX_LENGTH;
+
     students$ = this.userSrv.find('student');
 
     classroomForm = this.fb.group({
         name: new FormControl<string>('', {
             nonNullable: true,
             // pattern: non accetta un nome fatto solo di spazi
-            validators: [Validators.required, Validators.pattern(/\S/)]
+            validators: [Validators.required, Validators.pattern(/\S/), Validators.maxLength(CLASSROOM_NAME_MAX_LENGTH)]
         }),
         // ids degli studenti selezionati: required fallisce se l'array è vuoto
         students: new FormControl<string[]>([], {

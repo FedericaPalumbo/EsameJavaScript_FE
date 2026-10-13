@@ -38,6 +38,8 @@ export class NavbarComponent {
 
     logout() {
         this.authSrv.logout();
-        this.router.navigate(['/']);
+        // vado direttamente al login: '/' reindirizza a /classrooms e, se ero già lì,
+        // Angular riusa la rotta e non riesegue la guard, quindi la pagina restava visibile
+        this.router.navigate(['/login']);
     }
 }
