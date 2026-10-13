@@ -32,14 +32,14 @@ export class NavbarComponent {
         { initialValue: this.router.url.split('?')[0] }
     );
 
-    // nelle pagine di login e registrazione il pulsante Login in navbar è superfluo
-    showLoginBtn = computed(() => !['/login', '/register'].includes(this.currentPath()));
+    // nelle pagine di benvenuto, login e registrazione il pulsante Login in navbar è superfluo
+    showLoginBtn = computed(() => !['/welcome', '/login', '/register'].includes(this.currentPath()));
 
 
     logout() {
         this.authSrv.logout();
-        // vado direttamente al login: '/' reindirizza a /classrooms e, se ero già lì,
-        // Angular riusa la rotta e non riesegue la guard, quindi la pagina restava visibile
-        this.router.navigate(['/login']);
+        // vado direttamente alla pagina di benvenuto: '/classrooms' non rieseguirebbe la guard
+        // (Angular riusa la rotta) e la pagina restava visibile
+        this.router.navigate(['/welcome']);
     }
 }

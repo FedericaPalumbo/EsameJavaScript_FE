@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { ClassroomListComponent } from './pages/classroom-list/classroom-list.component';
 import { authGuard } from './utils/auth.guard';
 import { AssignmentListComponent } from './pages/assignment-list/assignment-list.component';
@@ -17,6 +18,10 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'welcome',
+    component: WelcomeComponent
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
@@ -26,11 +31,11 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/classrooms',
+    redirectTo: '/welcome',
     pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: '/classrooms'
+    redirectTo: '/welcome'
   }
 ];
