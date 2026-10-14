@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --brand-navy: #16365f;
+    --brand-navy-dark: #0f2a4d;
+    --brand-coral: #f26b5b;
+    --brand-muted: #6b7a90;
+    --font-brand: 'DM Sans', system-ui, sans-serif;
+}

@@ -7,6 +7,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RegisterSuccessComponent } from '../../components/register-success/register-success.component';
+import { passwordValidator, urlValidator } from '../../utils/validators';
+
+// messaggio mostrato sotto il campo quando è vuoto
+const REQUIRED_MESSAGES: Record<string, string> = {
+    firstName: 'Inserisci il tuo nome.',
+    lastName: 'Inserisci il tuo cognome.',
+    picture: 'Inserisci l\'URL della tua immagine profilo.',
+    username: 'Inserisci la tua email.',
+    password: 'Inserisci una password.'
+};
 
 @Component({
     selector: 'app-register',
@@ -24,18 +34,47 @@ export class RegisterComponent {
     registerForm = this.fb.group({
         firstName: ['', { validators: [Validators.required] }],
         lastName: ['', { validators: [Validators.required] }],
-        picture: ['', { validators: [Validators.required] }],
-        role: ['', { validators: [Validators.required] }],
-        username: ['', { validators: [Validators.required] }],
-        password: ['', { validators: [Validators.required] }]
+        picture: ['', { validators: [Validators.required, urlValidator] }],
+        role: ['student', { validators: [Validators.required] }],
+        // il pattern richiede anche il punto dopo la @ (Validators.email accetterebbe "mario@scuola"), come @IsEmail del backend
+        username: ['', { validators: [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)] }],
+        password: ['', { validators: [Validators.required, passwordValidator] }]
     });
 
     errorMessage = signal<string | null>(null);
+    // errori di un campo specifico restituiti dal backend (es. { username: 'Esiste già un account...' })
+    serverErrors = signal<Record<string, string>>({});
 
     ngOnInit() {
         this.registerForm.valueChanges
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(() => this.errorMessage.set(null))
+            .subscribe(() => {
+                this.errorMessage.set(null);
+                this.serverErrors.set({});
+            })
+    }
+
+    // messaggio di errore da mostrare sotto il campo (null = nessun errore).
+    // Gli errori di validazione compaiono solo dopo che l'utente ha toccato il campo o ha premuto "Crea account"
+    fieldError(name: string): string | null {
+        const serverError = this.serverErrors()[name];
+        if (serverError) {
+            return serverError;
+        }
+
+        const control = this.registerForm.get(name)!;
+        if (!control.touched || !control.errors) {
+            return null;
+        }
+        if (control.errors['required']) {
+            return REQUIRED_MESSAGES[name];
+        }
+        if (control.errors['password']) {
+            return control.errors['password'];
+        }
+        return name === 'picture'
+            ? 'Inserisci un URL valido che inizi con http:// o https://'
+            : 'Inserisci un\'email valida (es. nome@scuola.it).';
     }
 
     register() {
@@ -54,12 +93,19 @@ export class RegisterComponent {
                     // così l'utente entra senza passare dalla pagina di login
                     switchMap(() => this.authSrv.login(username!, password!)),
                     catchError(response => {
-                        const message = response.error.message;
-                        this.errorMessage.set(message);
+                        // 'UserExists' è l'errore previsto dal backend (400) quando l'email è già registrata
+                        if (response.error?.error === 'UserExists') {
+                            this.serverErrors.set({ username: 'Esiste già un account con questa email.' });
+                        } else {
+                            this.errorMessage.set(response.error?.message ?? 'Impossibile contattare il server, riprova più tardi.');
+                        }
                         return throwError(() => response);
                     })
                 )
                 .subscribe(() => this.openSuccessModal());
+        } else {
+            // mostra subito gli errori di tutti i campi non validi
+            this.registerForm.markAllAsTouched();
         }
     }
 

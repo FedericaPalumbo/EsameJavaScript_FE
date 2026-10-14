@@ -1,62 +1,98 @@
-<div class="container mt-5">
-    <div class="row">
-        <div class="col col-lg-4 d-none d-lg-block"></div>
+<div class="register-page">
+    <!-- pannello di presentazione: visibile solo da lg in su -->
+    <aside class="brand-panel d-none d-lg-flex">
+        <div class="brand-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H18v15H6.5A1.5 1.5 0 0 0 5 19.5v-15Z" />
+                <path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H18v-3" />
+            </svg>
+        </div>
+        <h1 class="brand-title">Il tuo nuovo spazio per imparare.</h1>
+        <p class="brand-text">Crea il tuo profilo e inizia subito il tuo viaggio in Classroom.</p>
+        <blockquote class="brand-quote">La cosa migliore è che non si finisce mai di imparare.</blockquote>
+    </aside>
 
-        <div class="col col-lg-4 col-md-12 border rounded p-4">
+    <main class="form-panel">
+        <div class="form-wrapper">
+            <a class="back-link" routerLink="/welcome">&larr; Torna alla home</a>
+
+            <div class="eyebrow">Iniziamo</div>
+            <h2 class="form-title">Crea il tuo account</h2>
+            <p class="form-subtitle">Bastano pochi dati per entrare in Classroom.</p>
+
             <form [formGroup]="registerForm" (ngSubmit)="register()">
-                <div class="form-outline mb-4">
-                    <label class="form-label">Nome</label>
-                    <input class="form-control" type="text" formControlName="firstName">
+                <!-- scelta del ruolo: scrive nel controllo 'role' -->
+                <div class="role-switch mb-4">
+                    <button type="button" [class.active]="registerForm.controls.role.value === 'student'"
+                        (click)="registerForm.controls.role.setValue('student')">Sono uno studente</button>
+                    <button type="button" [class.active]="registerForm.controls.role.value === 'teacher'"
+                        (click)="registerForm.controls.role.setValue('teacher')">Sono un docente</button>
                 </div>
 
-                <div class="form-outline mb-4">
-                    <label class="form-label">Cognome</label>
-                    <input class="form-control" type="text" formControlName="lastName">
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-sm-6">
+                        <label class="form-label">Nome</label>
+                        <input class="form-control" type="text" placeholder="es. Mario" formControlName="firstName"
+                            [class.is-invalid]="fieldError('firstName')">
+                        @if (fieldError('firstName'); as error) {
+                        <div class="field-error">{{ error }}</div>
+                        }
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <label class="form-label">Cognome</label>
+                        <input class="form-control" type="text" placeholder="es. Rossi" formControlName="lastName"
+                            [class.is-invalid]="fieldError('lastName')">
+                        @if (fieldError('lastName'); as error) {
+                        <div class="field-error">{{ error }}</div>
+                        }
+                    </div>
                 </div>
 
-                <div class="form-outline mb-4">
+                <div class="mb-3">
                     <label class="form-label">Immagine profilo (URL)</label>
-                    <input class="form-control" type="url" formControlName="picture">
+                    <input class="form-control" type="url" placeholder="https://sito.it/la-tua-foto.png"
+                        formControlName="picture" [class.is-invalid]="fieldError('picture')">
+                    @if (fieldError('picture'); as error) {
+                    <div class="field-error">{{ error }}</div>
+                    }
                 </div>
 
-                <div class="form-outline mb-4">
-                    <label class="form-label">Ruolo</label>
-                    <select class="form-select" formControlName="role">
-                        <option value="" disabled>Seleziona un ruolo</option>
-                        <option value="teacher">Docente</option>
-                        <option value="student">Studente</option>
-                    </select>
-                </div>
-
-                <div class="form-outline mb-4">
+                <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input class="form-control" type="email" formControlName="username">
+                    <input class="form-control" type="email" placeholder="nome@scuola.it" formControlName="username"
+                        [class.is-invalid]="fieldError('username')">
+                    @if (fieldError('username'); as error) {
+                    <div class="field-error">{{ error }}</div>
+                    }
                 </div>
 
-                <div class="form-outline mb-4">
+                <div class="mb-4">
                     <label class="form-label">Password</label>
-                    <div class="input-group">
-                        <input #pwd class="form-control" type="password" formControlName="password">
-                        <button class="btn btn-outline-secondary" type="button"
+                    <div class="password-field">
+                        <input #pwd class="form-control" type="password" placeholder="Scegli la tua password"
+                            formControlName="password" [class.is-invalid]="fieldError('password')">
+                        <button class="toggle-password" type="button"
                             (click)="pwd.type = pwd.type === 'password' ? 'text' : 'password'">
                             {{ pwd.type === 'password' ? 'Mostra' : 'Nascondi' }}
                         </button>
                     </div>
-                </div>
-                <div class="text-danger">
-                    {{ errorMessage() }}
-                </div>
-
-                <div class="text-center">
-                    <button [disabled]="registerForm.invalid" type="submit"
-                        class="btn btn-primary btn-block mb-4">Registrati</button>
+                    @if (fieldError('password'); as error) {
+                    <div class="field-error">{{ error }}</div>
+                    }
                 </div>
 
-                <div class="text-center">
-                    <a routerLink="/login">Hai già un account? Accedi</a>
+                <!-- errori non legati a un campo (es. server non raggiungibile) -->
+                @if (errorMessage()) {
+                <div class="alert alert-danger py-2">{{ errorMessage() }}</div>
+                }
+
+                <button type="submit" class="btn btn-primary btn-register w-100 mb-4">Crea account &rsaquo;</button>
+
+                <div class="text-center form-footer">
+                    Hai già un account? <a class="link-accent" routerLink="/login">Accedi</a>
                 </div>
             </form>
         </div>
-    </div>
-
+    </main>
 </div>
