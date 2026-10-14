@@ -9,7 +9,7 @@
 /* ---------- pannello di presentazione ---------- */
 .brand-panel {
     position: relative;
-    flex: 0 0 41%;
+    flex: 0 0 41vw;
     flex-direction: column;
     justify-content: center;
     padding: 4rem 5rem;
@@ -18,16 +18,18 @@
     background-color: var(--brand-navy);
 }
 
-/* cerchio decorativo in basso a destra */
+/* cerchi decorativi in basso a destra: un cerchio con bordo sottile circondato da due fasce concentriche
+   (le box-shadow si sovrappongono, quindi la fascia interna risulta più chiara di quella esterna) */
 .brand-panel::before {
     content: '';
     position: absolute;
-    right: -140px;
-    bottom: -180px;
-    width: 460px;
-    height: 460px;
-    border: 50px solid rgba(255, 255, 255, 0.05);
+    right: -225px;
+    bottom: -178px;
+    width: 450px;
+    height: 450px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 50%;
+    box-shadow: 0 0 0 57px rgba(255, 255, 255, 0.05), 0 0 0 114px rgba(255, 255, 255, 0.05);
 }
 
 .brand-panel>* {
@@ -44,6 +46,7 @@
     color: var(--brand-coral);
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 1.4rem;
+    transform: rotate(-4deg);
 }
 
 .brand-title {
@@ -185,10 +188,18 @@
     --bs-btn-hover-border-color: var(--brand-navy-dark);
     --bs-btn-active-bg: var(--brand-navy-dark);
     --bs-btn-active-border-color: var(--brand-navy-dark);
+    --bs-btn-disabled-bg: #b8c1cd;
+    --bs-btn-disabled-border-color: #b8c1cd;
+    --bs-btn-disabled-opacity: 1;
     height: 3.4rem;
     font-weight: 700;
     border-radius: 0.9rem;
     box-shadow: 0 8px 20px rgba(22, 54, 95, 0.25);
+}
+
+/* da disabilitato: grigio e senza ombra */
+.btn-login:disabled {
+    box-shadow: none;
 }
 
 .form-footer {

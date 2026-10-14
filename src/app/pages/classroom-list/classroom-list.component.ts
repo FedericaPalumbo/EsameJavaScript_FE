@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, EMPTY, switchMap } from 'rxjs';
+import { Classroom } from '../../entities';
 import { ClassroomService } from '../../services/classroom.service';
 import { ClassroomCardComponent } from '../../components/classroom-card/classroom-card.component';
 import { ClassroomAddPulsanteComponent } from '../../components/classroom-addpulsante/classroom-addpulsante.component';
@@ -31,6 +32,18 @@ export class ClassroomListComponent {
   classrooms$ = this.reload$.pipe(
     switchMap(() => this.classroomSrv.find())
   );
+
+  // testo scritto nella barra di ricerca
+  search = signal('');
+
+  // classi il cui nome contiene il testo cercato. L'indice è quello nella lista completa:
+  // così colore e numero delle card non cambiano mentre si digita
+  visibleClassrooms(classrooms: Classroom[]) {
+    const text = this.search().trim().toLowerCase();
+    return classrooms
+      .map((classroom, index) => ({ classroom, index }))
+      .filter(item => item.classroom.name.toLowerCase().includes(text));
+  }
 
   navigateToDetail(id: string) {
     this.router.navigate(['/classrooms', id]);

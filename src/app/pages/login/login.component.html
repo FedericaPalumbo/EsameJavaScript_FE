@@ -9,8 +9,8 @@
             </svg>
         </div>
         <h1 class="brand-title">Bentornato in classe.</h1>
-        <p class="brand-text">Riprendi da dove avevi lasciato e resta al passo con tutte le attività.</p>
-        <blockquote class="brand-quote">La cosa bella dell'imparare è che nessuno può portartela via.</blockquote>
+        <p class="brand-text">Riprendi da dove avevi lasciato e resta al passo con tutte le attività in classroom.</p>
+        <blockquote class="brand-quote">Un libro al giorno...</blockquote>
     </aside>
 
     <main class="form-panel">
@@ -22,14 +22,6 @@
             <p class="form-subtitle">Inserisci i tuoi dati per continuare.</p>
 
             <form [formGroup]="loginForm" (ngSubmit)="login()">
-                <!-- scelta del ruolo: scrive nel controllo 'role' -->
-                <div class="role-switch mb-4">
-                    <button type="button" [class.active]="loginForm.controls.role.value === 'student'"
-                        (click)="loginForm.controls.role.setValue('student')">Sono uno studente</button>
-                    <button type="button" [class.active]="loginForm.controls.role.value === 'teacher'"
-                        (click)="loginForm.controls.role.setValue('teacher')">Sono un docente</button>
-                </div>
-
                 <div class="mb-3">
                     <label class="form-label">Email</label>
                     <input class="form-control" type="email" placeholder="nome@scuola.it" formControlName="username">

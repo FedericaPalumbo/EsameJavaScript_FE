@@ -9,7 +9,7 @@
 /* ---------- pannello di presentazione ---------- */
 .brand-panel {
     position: relative;
-    flex: 0 0 41%;
+    flex: 0 0 41vw;
     flex-direction: column;
     justify-content: center;
     padding: 4rem 5rem;

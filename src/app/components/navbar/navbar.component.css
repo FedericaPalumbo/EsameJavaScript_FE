@@ -1,0 +1,45 @@
+/* 56px = altezza usata anche da login e registrazione per calcolare l'altezza della pagina */
+.app-navbar {
+    height: 56px;
+    font-family: var(--font-brand);
+    background-color: #fff;
+    border-bottom: 1px solid var(--brand-border);
+}
+
+.navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 1.25rem;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    background-color: var(--brand-navy);
+    border-radius: 0.65rem;
+}
+
+.brand-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--brand-navy-dark);
+}
+
+.login-link {
+    font-weight: 600;
+    color: var(--brand-navy);
+    text-decoration: none;
+}

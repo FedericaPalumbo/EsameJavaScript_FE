@@ -1,8 +1,35 @@
-<div class="card mt-2">
-    <div class="card-body">
-        <h5 class="card-title">{{ classroom().name }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{ classroom().createdBy.fullName }}</h6>
-        <p class="card-text">Studenti: {{ classroom().studentsCount }}</p>
-        <a class="btn btn-link" (click)="goToDetail()">dettagli</a>
+<article class="class-card" [class]="color()" tabindex="0" (click)="goToDetail()" (keydown.enter)="goToDetail()">
+    <div class="class-cover">
+        <span class="class-number">{{ number() }}</span>
+        <h2 class="class-name">{{ classroom().name }}</h2>
     </div>
-</div>
+
+    <div class="class-info">
+        <div class="teacher">
+            <img class="teacher-avatar" [src]="classroom().createdBy.picture" [alt]="classroom().createdBy.fullName">
+            <div>
+                <div class="teacher-label">Docente</div>
+                <div class="teacher-name">{{ classroom().createdBy.fullName }}</div>
+            </div>
+        </div>
+
+        <div class="class-footer">
+            <span class="students-count">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                {{ classroom().studentsCount }} {{ classroom().studentsCount === 1 ? 'studente' : 'studenti' }}
+            </span>
+            <span class="class-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m9 18 6-6-6-6" />
+                </svg>
+            </span>
+        </div>
+    </div>
+</article>

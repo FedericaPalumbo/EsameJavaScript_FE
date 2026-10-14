@@ -1,15 +1,49 @@
-<div class="d-flex justify-content-end mt-4" *ifRole="'teacher'">
-    <app-classroom-addpulsante (onAdd)="create($event)" />
-</div>
+<div class="classes-page">
+    <div class="page-container">
+        <header class="page-header">
+            <div>
+                <div class="eyebrow">Il tuo spazio</div>
+                <h1 class="page-title">Le mie classi</h1>
+                <p class="page-subtitle" *ifRole="'teacher'; else studentSubtitle">Gestisci le tue classi e tieni
+                    d'occhio i progressi.</p>
+                <ng-template #studentSubtitle>
+                    <p class="page-subtitle">Tutto ciò che riguarda le tue classi, in un solo posto.</p>
+                </ng-template>
+            </div>
 
-@if (errorMessage()) {
-<div class="alert alert-danger mt-3" role="alert">{{ errorMessage() }}</div>
-}
+            <div class="header-action" *ifRole="'teacher'">
+                <app-classroom-addpulsante (onAdd)="create($event)" />
+            </div>
+        </header>
 
-<div class="row row-cols-1 row-cols-md-4 g-6 mt-5">
-    @for (classroom of classrooms$ | async; track classroom.id) {
-    <div class="col">
-        <app-classroom-card [classroom]="classroom" (onDetail)="navigateToDetail(classroom.id)" />
+        @if (errorMessage()) {
+        <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
+        }
+
+        @let classrooms = classrooms$ | async;
+        @if (classrooms) {
+        @let visible = visibleClassrooms(classrooms);
+
+        <div class="toolbar">
+            <label class="search-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-3.5-3.5" />
+                </svg>
+                <input #q type="text" placeholder="Cerca una classe…" [value]="search()" (input)="search.set(q.value)">
+            </label>
+            <span class="count">{{ visible.length }} {{ visible.length === 1 ? 'classe' : 'classi' }}</span>
+        </div>
+
+        <div class="class-grid">
+            @for (item of visible; track item.classroom.id) {
+            <app-classroom-card [classroom]="item.classroom" [index]="item.index"
+                (onDetail)="navigateToDetail(item.classroom.id)" />
+            } @empty {
+            <p class="empty-state">Nessuna classe trovata.</p>
+            }
+        </div>
+        }
     </div>
-    }
 </div>

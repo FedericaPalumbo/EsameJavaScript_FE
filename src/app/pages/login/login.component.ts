@@ -21,7 +21,6 @@ export class LoginComponent {
     private activatedRoute = inject(ActivatedRoute);
 
     loginForm = this.fb.group({
-        role: ['student', { validators: [Validators.required] }],
         username: ['', { validators: [Validators.required] }],
         password: ['', { validators: [Validators.required] }]
     });
@@ -59,16 +58,7 @@ export class LoginComponent {
                         return throwError(() => response);
                     })
                 )
-                .subscribe(user => {
-                    // l'account deve corrispondere alla scheda scelta (studente / docente)
-                    if (user.role !== this.loginForm.value.role) {
-                        this.authSrv.logout();
-                        this.errorMessage.set(user.role === 'teacher'
-                            ? 'Questo account è di un docente: seleziona "Sono un docente".'
-                            : 'Questo account è di uno studente: seleziona "Sono uno studente".');
-                        return;
-                    }
-
+                .subscribe(() => {
                     const dest = this.activatedRoute.snapshot.queryParams['dest'] || '/classrooms';
                     this.router.navigate([dest]);
                 });

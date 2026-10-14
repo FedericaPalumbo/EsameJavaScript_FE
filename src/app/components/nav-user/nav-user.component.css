@@ -1,4 +1,46 @@
-.nav-user-avatar {
-    height: 40px;
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-brand);
+}
+
+.user-avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    object-fit: cover;
+    background-color: var(--brand-soft);
     border-radius: 50%;
+}
+
+.user-text {
+    line-height: 1.2;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--brand-navy-dark);
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: var(--brand-muted);
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    color: var(--brand-muted);
+    background-color: #fff;
+    border: 1px solid var(--brand-border);
+    border-radius: 0.7rem;
+}
+
+.logout-btn:hover {
+    color: var(--brand-navy);
+    background-color: var(--brand-bg);
 }

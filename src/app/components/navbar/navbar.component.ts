@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterModule } from "@angular/router";
+import { NavigationEnd, Router, RouterLink } from "@angular/router";
 import { NavUserComponent } from "../nav-user/nav-user.component";
 import { AuthService } from '../../services/auth.service';
 import { IfAuthenticatedDirective } from "../../utils/if-authenticated.directive";
@@ -10,9 +10,7 @@ import { IfAuthenticatedDirective } from "../../utils/if-authenticated.directive
     selector: 'app-navbar',
     imports: [
         RouterLink,
-        RouterLinkActive,
         NavUserComponent,
-        RouterModule,
         IfAuthenticatedDirective],
     templateUrl: './navbar.component.html',
     styleUrl: './navbar.component.css',
