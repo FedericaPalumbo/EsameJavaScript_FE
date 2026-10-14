@@ -1,38 +1,64 @@
-<div class="container mt-5">
-    <div class="row">
-        <div class="col col-lg-4 d-none d-lg-block"></div>
+<div class="login-page">
+    <!-- pannello di presentazione: visibile solo da lg in su -->
+    <aside class="brand-panel d-none d-lg-flex">
+        <div class="brand-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H18v15H6.5A1.5 1.5 0 0 0 5 19.5v-15Z" />
+                <path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H18v-3" />
+            </svg>
+        </div>
+        <h1 class="brand-title">Bentornato in classe.</h1>
+        <p class="brand-text">Riprendi da dove avevi lasciato e resta al passo con tutte le attività.</p>
+        <blockquote class="brand-quote">La cosa bella dell'imparare è che nessuno può portartela via.</blockquote>
+    </aside>
 
-        <div class="col col-lg-4 col-md-12 border rounded p-4">
+    <main class="form-panel">
+        <div class="form-wrapper">
+            <a class="back-link" routerLink="/welcome">&larr; Torna alla home</a>
+
+            <div class="eyebrow">Bentornato</div>
+            <h2 class="form-title">Accedi al tuo account</h2>
+            <p class="form-subtitle">Inserisci i tuoi dati per continuare.</p>
+
             <form [formGroup]="loginForm" (ngSubmit)="login()">
-                <div class="form-outline mb-4">
-                    <label class="form-label">Email Address</label>
-                    <input class="form-control" type="email" formControlName="username">
+                <!-- scelta del ruolo: scrive nel controllo 'role' -->
+                <div class="role-switch mb-4">
+                    <button type="button" [class.active]="loginForm.controls.role.value === 'student'"
+                        (click)="loginForm.controls.role.setValue('student')">Sono uno studente</button>
+                    <button type="button" [class.active]="loginForm.controls.role.value === 'teacher'"
+                        (click)="loginForm.controls.role.setValue('teacher')">Sono un docente</button>
                 </div>
 
-                <div class="form-outline mb-4">
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input class="form-control" type="email" placeholder="nome@scuola.it" formControlName="username">
+                </div>
+
+                <div class="mb-4">
                     <label class="form-label">Password</label>
-                    <div class="input-group">
-                        <input #pwd class="form-control" type="password" formControlName="password">
-                        <button class="btn btn-outline-secondary" type="button"
+                    <div class="password-field">
+                        <input #pwd class="form-control" type="password" placeholder="La tua password"
+                            formControlName="password">
+                        <button class="toggle-password" type="button"
                             (click)="pwd.type = pwd.type === 'password' ? 'text' : 'password'">
                             {{ pwd.type === 'password' ? 'Mostra' : 'Nascondi' }}
                         </button>
                     </div>
                 </div>
-                <div class="text-danger">
-                    {{ errorMessage() }}
-                </div>
 
-                <div class="text-center">
-                    <button [disabled]="loginForm.invalid" type="submit" class="btn btn-primary btn-block mb-4">Sign
-                        In</button>
+                <!-- errori di accesso (credenziali errate, ruolo sbagliato, server non raggiungibile) -->
+                @if (errorMessage()) {
+                <div class="alert alert-danger py-2">{{ errorMessage() }}</div>
+                }
+
+                <button [disabled]="loginForm.invalid" type="submit" class="btn btn-primary btn-login w-100 mb-4">Accedi
+                    &rsaquo;</button>
+
+                <div class="text-center form-footer">
+                    Non hai ancora un account? <a class="link-accent" routerLink="/register">Registrati</a>
                 </div>
             </form>
-
-            <div class="text-center">
-                <a routerLink="/register">Registrati</a>
-            </div>
         </div>
-    </div>
-
+    </main>
 </div>
