@@ -5,8 +5,14 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { ClassroomListComponent } from './pages/classroom-list/classroom-list.component';
 import { authGuard } from './utils/auth.guard';
 import { AssignmentListComponent } from './pages/assignment-list/assignment-list.component';
+import { AssignmentDetailComponent } from './pages/assignment-detail/assignment-detail.component';
 
 export const routes: Routes = [
+  {
+    path: 'classrooms/:classroomId/assignments/:id',
+    component: AssignmentDetailComponent,
+    canActivate: [authGuard]
+  },
   {
     path: 'classrooms/:id',
     component: AssignmentListComponent,

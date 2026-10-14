@@ -12,6 +12,7 @@
     }
 
     @for (assignment of assignments$ | async; track assignment.id) {
-    <app-assignment-item [assignment]="assignment" (onComplete)="complete(assignment.id)" />
+    <app-assignment-item [assignment]="assignment" (onComplete)="complete(assignment.id)"
+        (onDetail)="navigateToDetail(assignment.id)" />
     }
 </div>

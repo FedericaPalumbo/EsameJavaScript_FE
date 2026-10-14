@@ -62,6 +62,11 @@ export class AssignmentListComponent {
         )
     );
 
+    // relativeTo: aggiunge assignments/:id all'url corrente (/classrooms/:id)
+    navigateToDetail(id: string) {
+        this.router.navigate(['assignments', id], { relativeTo: this.activatedRoute });
+    }
+
     // il docente crea l'attività dal modal, poi la lista viene ricaricata
     create(assignment: AssignmentFormEvent) {
         this.classroomId$

@@ -1,0 +1,17 @@
+<div class="container mt-4">
+    <a [routerLink]="['/classrooms', classroomId$ | async]">&larr; Torna alle attività</a>
+
+    @if (errorMessage()) {
+    <div class="alert alert-danger mt-3" role="alert">{{ errorMessage() }}</div>
+    }
+
+    @let assignment = assignment$ | async;
+    @if (assignment) {
+    <h2 class="mt-3">{{ assignment.title }}</h2>
+    <h6 class="text-muted">{{ assignment.createdAt | date: 'longDate' }}</h6>
+    <p class="mb-1">Completata da {{ assignment.completedCount }}/{{ assignment.studentsCount }} studenti</p>
+    <ngb-progressbar type="success" [value]="assignment.completedCount" [max]="assignment.studentsCount" />
+
+    <app-assignment-student-list class="d-block mt-4" [students]="assignment.students" />
+    }
+</div>

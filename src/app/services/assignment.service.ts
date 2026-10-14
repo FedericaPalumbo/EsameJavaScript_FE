@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Assignment } from '../entities';
+import { Assignment, AssignmentDetail } from '../entities';
 
 export type CreateAssignmentPayload = {
     title: string;
@@ -14,6 +14,11 @@ export class AssignmentService {
 
     find(classroomId: string) {
         return this.http.get<Assignment[]>(`/api/classrooms/${classroomId}/assignments`);
+    }
+
+    // GET disponibile solo per il docente che ha creato la classe: torna anche la lista degli studenti
+    getById(classroomId: string, id: string) {
+        return this.http.get<AssignmentDetail>(`/api/classrooms/${classroomId}/assignments/${id}`);
     }
 
     // POST disponibile solo per il docente che ha creato la classe

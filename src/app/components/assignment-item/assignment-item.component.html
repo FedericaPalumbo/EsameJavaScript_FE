@@ -5,6 +5,13 @@
         <p class="card-text mb-1">Completata da {{ assignment().completedCount }}/{{ assignment().studentsCount }}
             studenti</p>
         <ngb-progressbar type="success" [value]="assignment().completedCount" [max]="assignment().studentsCount" />
+        @if (assignment().completed) {
+        <p class="card-text text-success mt-2 mb-0">
+            Hai completato questa attività@if (assignment().completedAt) { il {{ assignment().completedAt | date:
+            'longDate' }}}
+        </p>
+        }
+        <a class="btn btn-link px-0" *ifRole="'teacher'" (click)="goToDetail()">studenti</a>
     </div>
     @if (!assignment().completed) {
     <div class="card-footer text-muted text-end" *ifRole="'student'">

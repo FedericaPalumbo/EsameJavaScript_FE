@@ -21,6 +21,19 @@ export type Assignment = {
   studentsCount: number,
   completedCount: number,
   completed?: boolean,
+  // solo studenti: data in cui l'utente ha completato l'attività
+  completedAt?: string,
   createdAt: string,
   createdBy: User
+}
+
+// Riga della lista studenti nel dettaglio di un'attività (solo docente)
+export type AssignmentStudent = {
+  student: User,
+  completed: boolean,
+  completedAt?: string
+}
+
+export type AssignmentDetail = Assignment & {
+  students: AssignmentStudent[]
 }

@@ -27,8 +27,13 @@ export class AssignmentItemComponent {
     assignment = input.required<Assignment>();
 
     onComplete = output<void>();
+    onDetail = output<void>();
 
     complete() {
         this.onComplete.emit();
+    }
+
+    goToDetail() {
+        this.onDetail.emit();
     }
 }
