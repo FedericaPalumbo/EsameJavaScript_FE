@@ -26,17 +26,109 @@
     color: var(--brand-navy);
 }
 
-/* ---------- intestazione ---------- */
+/* ---------- testata della classe ---------- */
+/* mobile: badge | nome e docente sulla prima riga, pulsante "Nuova attività" a tutta larghezza sotto */
+.class-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1.25rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--brand-border);
+}
+
+.class-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    padding: 0 0.25rem;
+    overflow: hidden;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(160deg, #f58f7d, var(--brand-coral));
+    border-radius: 1.25rem;
+}
+
+.class-title {
+    margin: 0;
+    font-size: clamp(2rem, 8vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--brand-navy-dark);
+    overflow-wrap: anywhere;
+}
+
+.class-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--brand-muted);
+}
+
+.teacher-avatar {
+    width: 1.75rem;
+    height: 1.75rem;
+    object-fit: cover;
+    background-color: var(--brand-soft);
+    border-radius: 50%;
+}
+
+.header-action {
+    grid-column: 1 / -1;
+}
+
+/* ---------- statistiche ---------- */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 1.25rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid var(--brand-border);
+    border-radius: 1.5rem;
+}
+
+.stat {
+    padding: 0 0.5rem;
+}
+
+.stat+.stat {
+    border-left: 1px solid var(--brand-border);
+}
+
+.stat-value {
+    display: block;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 700;
+    color: var(--brand-navy-dark);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--brand-muted);
+}
+
+/* ---------- titolo e ordinamento: sempre sulla stessa riga ---------- */
 .page-header {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .page-title {
     margin: 0 0 0.5rem;
-    font-size: clamp(2rem, 6vw, 2.8rem);
+    font-size: clamp(1.8rem, 6vw, 2.4rem);
     font-weight: 700;
     letter-spacing: -0.03em;
     color: var(--brand-navy-dark);
@@ -47,6 +139,16 @@
     color: var(--brand-muted);
 }
 
+.sort-select {
+    width: auto;
+    font-family: var(--font-brand);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--brand-navy-dark);
+    border-color: var(--brand-border);
+    border-radius: 0.9rem;
+}
+
 /* ---------- lista attività: una colonna, le card si distanziano con il gap ---------- */
 .assignment-list {
     display: flex;
@@ -54,15 +156,23 @@
     gap: 1rem;
 }
 
-/* da md in su titolo e pulsante "Nuova attività" stanno sulla stessa riga */
+/* da md in su: badge | nome | pulsante "Nuova attività" sulla stessa riga */
 @media (min-width: 768px) {
     .assignments-page {
         padding-top: 2.5rem;
     }
 
-    .page-header {
-        flex-direction: row;
-        align-items: flex-end;
-        justify-content: space-between;
+    .class-header {
+        grid-template-columns: auto 1fr auto;
+    }
+
+    .class-badge {
+        width: 5.5rem;
+        height: 5.5rem;
+        font-size: 1.7rem;
+    }
+
+    .header-action {
+        grid-column: auto;
     }
 }

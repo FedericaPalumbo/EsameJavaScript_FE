@@ -1,7 +1,7 @@
-/* mobile: icona + testo sulla prima riga, pulsante a tutta larghezza sotto */
+/* mobile: icona | testo | freccia (docente) sulla prima riga, pulsante "Completa" a tutta larghezza sotto */
 .assignment-card {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     gap: 1rem;
     padding: 1.25rem;
     font-family: var(--font-brand);
@@ -53,7 +53,7 @@
 }
 
 .assignment-title {
-    margin: 0.5rem 0 0.9rem;
+    margin: 0.5rem 0 0;
     font-size: 1.2rem;
     font-weight: 700;
     line-height: 1.3;
@@ -61,24 +61,75 @@
     overflow-wrap: anywhere;
 }
 
-/* ---------- avanzamento della classe ---------- */
+/* ---------- avanzamento della classe: solo da md in su ---------- */
+.assignment-progress-text,
+.assignment-ring {
+    display: none;
+}
+
 .assignment-progress-text {
-    margin: 0 0 0.4rem;
+    margin: 0.4rem 0 0;
     font-size: 0.85rem;
     color: var(--brand-muted);
 }
 
-/* ngb-progressbar è esso stesso l'elemento .progress: le variabili di Bootstrap vanno impostate qui */
-ngb-progressbar {
-    --bs-progress-height: 0.5rem;
-    --bs-progress-bg: var(--brand-soft);
-    --bs-progress-bar-bg: var(--brand-navy);
-    --bs-progress-border-radius: 999px;
+/* anello: il conic-gradient colora la percentuale (--p), il ::before lo svuota al centro */
+.assignment-ring {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--brand-navy-dark);
+    background: conic-gradient(var(--brand-navy) calc(var(--p) * 1%), var(--brand-soft) 0);
+    border-radius: 50%;
+}
+
+.assignment-ring::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.assignment-ring span {
+    position: relative;
 }
 
 /* ---------- pulsanti ---------- */
-.btn-detail,
+.btn-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    color: var(--brand-navy);
+    background-color: transparent;
+    border: 0;
+    border-radius: 50%;
+    transition: transform 0.15s, background-color 0.15s;
+}
+
+.btn-toggle:hover {
+    background-color: #eef1f6;
+}
+
+/* card aperta: la freccia si capovolge */
+.btn-toggle.open {
+    transform: rotate(180deg);
+}
+
 .btn-complete {
+    --bs-btn-bg: var(--brand-navy);
+    --bs-btn-border-color: var(--brand-navy);
+    --bs-btn-hover-bg: var(--brand-navy-dark);
+    --bs-btn-hover-border-color: var(--brand-navy-dark);
+    --bs-btn-active-bg: var(--brand-navy-dark);
+    --bs-btn-active-border-color: var(--brand-navy-dark);
     display: flex;
     grid-column: 1 / -1;
     align-items: center;
@@ -89,41 +140,45 @@ ngb-progressbar {
     font-family: var(--font-brand);
     font-weight: 700;
     border-radius: 0.9rem;
-}
-
-.btn-detail {
-    --bs-btn-color: var(--brand-navy);
-    --bs-btn-bg: #eef1f6;
-    --bs-btn-border-color: #eef1f6;
-    --bs-btn-hover-color: var(--brand-navy-dark);
-    --bs-btn-hover-bg: var(--brand-soft);
-    --bs-btn-hover-border-color: var(--brand-soft);
-    --bs-btn-active-color: var(--brand-navy-dark);
-    --bs-btn-active-bg: var(--brand-soft);
-    --bs-btn-active-border-color: var(--brand-soft);
-}
-
-.btn-complete {
-    --bs-btn-bg: var(--brand-navy);
-    --bs-btn-border-color: var(--brand-navy);
-    --bs-btn-hover-bg: var(--brand-navy-dark);
-    --bs-btn-hover-border-color: var(--brand-navy-dark);
-    --bs-btn-active-bg: var(--brand-navy-dark);
-    --bs-btn-active-border-color: var(--brand-navy-dark);
     box-shadow: 0 8px 20px rgba(22, 54, 95, 0.25);
 }
 
-/* da md in su: icona | testo | pulsante sulla stessa riga */
+/* ---------- elenco studenti (docente, card aperta) ---------- */
+.assignment-students {
+    grid-column: 1 / -1;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--brand-border);
+}
+
+.assignment-loading {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--brand-muted);
+}
+
+/* da md in su: icona | testo | anello | pulsante sulla stessa riga */
 @media (min-width: 768px) {
     .assignment-card {
-        grid-template-columns: auto 1fr auto;
+        grid-template-columns: auto 1fr auto auto;
         align-items: center;
         padding: 1.5rem 1.75rem;
         gap: 1.25rem;
     }
 
-    .btn-detail,
+    .assignment-progress-text {
+        display: block;
+    }
+
+    .assignment-ring {
+        display: flex;
+    }
+
     .btn-complete {
         grid-column: auto;
+    }
+
+    /* le righe a tutta larghezza (elenco studenti) restano fuori dall'allineamento al centro */
+    .assignment-students {
+        align-self: start;
     }
 }

@@ -8,11 +8,20 @@
             Torna alle classi
         </a>
 
-        <header class="page-header">
+        <header class="class-header">
+            @if (classroom$ | async; as classroom) {
+            <div class="class-badge">{{ classroom.name }}</div>
             <div>
-                <h1 class="page-title">Attività</h1>
-                <p class="page-subtitle">Le consegne e i progressi della classe.</p>
+                <h1 class="class-title">{{ classroom.name }}</h1>
+                <div class="class-meta">
+                    <img class="teacher-avatar" [src]="classroom.createdBy.picture"
+                        [alt]="classroom.createdBy.fullName">
+                    <span>{{ classroom.createdBy.fullName }}</span>
+                    <span>· {{ classroom.studentsCount }} {{ classroom.studentsCount === 1 ? 'studente' : 'studenti'
+                        }}</span>
+                </div>
             </div>
+            }
 
             <div class="header-action" *ifRole="'teacher'">
                 <app-assignment-addpulsante (onAdd)="create($event)" />
@@ -23,11 +32,43 @@
         <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
         }
 
+        @let assignments = assignments$ | async;
+        @if (assignments) {
+        @let stats = statsOf(assignments);
+
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-value">{{ stats.count }}</span>
+                <span class="stat-label">Attività totali</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">{{ stats.percent }}%</span>
+                <span class="stat-label">Completamento medio</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">{{ stats.pending }}</span>
+                <span class="stat-label">Da completare</span>
+            </div>
+        </div>
+
+        <header class="page-header">
+            <div>
+                <h2 class="page-title">Attività</h2>
+                <p class="page-subtitle">Le consegne e i progressi della classe.</p>
+            </div>
+
+            <select #s class="form-select sort-select" [value]="order()" (change)="order.set($any(s.value))">
+                <option value="recent">Più recenti</option>
+                <option value="oldest">Meno recenti</option>
+            </select>
+        </header>
+
         <div class="assignment-list">
-            @for (assignment of assignments$ | async; track assignment.id) {
-            <app-assignment-item [assignment]="assignment" (onComplete)="complete(assignment.id)"
-                (onDetail)="navigateToDetail(assignment.id)" />
+            @for (assignment of sortedAssignments(assignments); track assignment.id) {
+            <app-assignment-item [assignment]="assignment" [open]="openId() === assignment.id" [students]="students()"
+                (onComplete)="complete(assignment.id)" (onDetail)="toggleDetail(assignment.id)" />
             }
         </div>
+        }
     </div>
 </div>
