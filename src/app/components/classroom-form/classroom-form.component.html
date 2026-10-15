@@ -5,37 +5,53 @@
 
 <div class="modal-body">
     <form [formGroup]="classroomForm" (ngSubmit)="submit()">
-        <div class="mb-3">
-            <label class="form-label">Nome della classe</label>
-            <input type="text" class="form-control" placeholder="Nome classe" formControlName="name"
-                [maxlength]="nameMaxLength"
+        <div class="form-section">
+            <div class="section-head">
+                <span class="section-step">01</span>
+                <div>
+                    <label class="form-label" for="class-name">Nome della classe</label>
+                    <p class="section-hint">Scegli un nome chiaro e riconoscibile (massimo {{ nameMaxLength }}
+                        caratteri).</p>
+                </div>
+            </div>
+            <input id="class-name" type="text" class="form-control" placeholder="es. 3ª B · Italiano"
+                formControlName="name" [maxlength]="nameMaxLength"
                 [class.is-invalid]="classroomForm.controls.name.invalid && classroomForm.controls.name.touched">
             <div class="invalid-feedback">Il nome è obbligatorio</div>
-            <div class="form-text">Massimo {{ nameMaxLength }} caratteri</div>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Studenti</label>
-            <div class="list-group student-list">
-                @for (student of students$ | async; track student.id) {
-                <label class="list-group-item d-flex align-items-center gap-2">
-                    <input type="checkbox" class="form-check-input mt-0" [checked]="isSelected(student.id)"
-                        (change)="toggleStudent(student.id)">
-                    {{ student.fullName }}
-                </label>
-                } @empty {
-                <div class="list-group-item text-muted">Nessuno studente disponibile</div>
-                }
+        <div class="form-section">
+            <div class="section-head">
+                <span class="section-step">02</span>
+                <div>
+                    <div class="form-label">Aggiungi gli studenti</div>
+                    <p class="section-hint"
+                        [class.text-danger]="classroomForm.controls.students.invalid && classroomForm.controls.students.touched">
+                        Seleziona almeno uno studente
+                    </p>
+                </div>
             </div>
-            <div class="form-text"
-                [class.text-danger]="classroomForm.controls.students.invalid && classroomForm.controls.students.touched">
-                Seleziona almeno uno studente
+            @let selected = classroomForm.controls.students.value.length;
+            <div class="student-box">
+                <div class="student-count">{{ selected }} {{ selected === 1 ? 'selezionato' : 'selezionati' }}</div>
+                <div class="student-list">
+                    @for (student of students$ | async; track student.id) {
+                    <label class="student-item">
+                        <img class="student-avatar" [src]="student.picture" alt="">
+                        <span class="student-name">{{ student.fullName }}</span>
+                        <input type="checkbox" class="form-check-input" [checked]="isSelected(student.id)"
+                            (change)="toggleStudent(student.id)">
+                    </label>
+                    } @empty {
+                    <div class="p-4 text-center text-muted">Nessuno studente disponibile</div>
+                    }
+                </div>
             </div>
         </div>
     </form>
 </div>
 
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="classroomForm.invalid">Crea
+    <button type="button" class="btn btn-primary btn-create" (click)="submit()" [disabled]="classroomForm.invalid">Crea
         classe</button>
 </div>

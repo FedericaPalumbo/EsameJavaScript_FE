@@ -1,33 +1,31 @@
-<div class="row g-3">
-    <div class="col-md-6">
-        <h5>Hanno completato ({{ completed().length }})</h5>
-        <ul class="list-group">
+<div class="student-columns">
+    <section>
+        <h4 class="column-title">Hanno completato</h4>
+        <ul class="student-list">
             @for (item of completed(); track item.student.id) {
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>
-                    <img [src]="item.student.picture" class="student-avatar me-2">
-                    {{ item.student.fullName }}
-                </span>
+            <li class="student-row">
+                <img [src]="item.student.picture" class="student-avatar" [alt]="item.student.fullName">
+                <span class="student-name">{{ item.student.fullName }}</span>
                 @if (item.completedAt) {
-                <small class="text-muted">{{ item.completedAt | date: 'dd/MM/yyyy HH:mm' }}</small>
+                <small class="student-date">{{ item.completedAt | date: 'd MMM, HH:mm' }}</small>
                 }
             </li>
             } @empty {
-            <li class="list-group-item text-muted">Nessuno studente ha ancora completato l'attività</li>
+            <li class="student-empty">Nessuno studente ha ancora completato l'attività</li>
             }
         </ul>
-    </div>
-    <div class="col-md-6">
-        <h5>Non hanno completato ({{ pending().length }})</h5>
-        <ul class="list-group">
+    </section>
+    <section>
+        <h4 class="column-title">Da completare</h4>
+        <ul class="student-list">
             @for (item of pending(); track item.student.id) {
-            <li class="list-group-item">
-                <img [src]="item.student.picture" class="student-avatar me-2">
-                {{ item.student.fullName }}
+            <li class="student-row">
+                <img [src]="item.student.picture" class="student-avatar" [alt]="item.student.fullName">
+                <span class="student-name">{{ item.student.fullName }}</span>
             </li>
             } @empty {
-            <li class="list-group-item text-muted">Tutti gli studenti hanno completato l'attività</li>
+            <li class="student-empty">Tutti gli studenti hanno completato l'attività</li>
             }
         </ul>
-    </div>
+    </section>
 </div>

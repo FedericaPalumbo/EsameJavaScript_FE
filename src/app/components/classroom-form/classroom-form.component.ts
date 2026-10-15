@@ -5,7 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../services/user.service';
 
 // lunghezza massima del nome della classe (stesso valore del DTO nel backend)
-export const CLASSROOM_NAME_MAX_LENGTH = 30;
+export const CLASSROOM_NAME_MAX_LENGTH = 12;
 
 export type ClassroomFormEvent = {
     name: string,

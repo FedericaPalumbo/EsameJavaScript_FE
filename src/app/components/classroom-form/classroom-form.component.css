@@ -1,4 +1,202 @@
+:host {
+    font-family: var(--font-brand);
+}
+
+/* ---------- testata, corpo e piede del modal ---------- */
+.modal-header {
+    padding: 2rem 2.5rem 0;
+    border-bottom: 0;
+}
+
+.modal-title {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--brand-navy-dark);
+}
+
+.modal-body {
+    padding: 1.75rem 2.5rem;
+}
+
+.modal-footer {
+    padding: 0 2.5rem 2rem;
+    border-top: 0;
+}
+
+/* ---------- sezioni numerate (01, 02) ---------- */
+.form-section+.form-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--brand-border);
+}
+
+.section-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.section-step {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--brand-coral);
+    background-color: rgba(242, 107, 91, 0.12);
+    border-radius: 0.8rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.15rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--brand-navy-dark);
+}
+
+.section-hint {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--brand-muted);
+}
+
+/* ---------- campo nome ---------- */
+.form-control {
+    height: 3.4rem;
+    padding: 0 1.25rem;
+    border-radius: 0.9rem;
+}
+
+.form-control::placeholder {
+    color: #a3afc0;
+}
+
+.form-control:focus {
+    border-color: var(--brand-navy);
+    box-shadow: 0 0 0 0.2rem rgba(22, 54, 95, 0.15);
+}
+
+/* ---------- elenco studenti ---------- */
+.student-box {
+    overflow: hidden;
+    border: 1px solid var(--brand-border);
+    border-radius: 1rem;
+}
+
+.student-count {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--brand-muted);
+    background-color: #f6f8fb;
+    border-bottom: 1px solid var(--brand-border);
+}
+
 .student-list {
     max-height: 300px;
     overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.student-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.5rem;
+    cursor: pointer;
+    border-bottom: 1px solid var(--brand-border);
+}
+
+.student-item:last-child {
+    border-bottom: 0;
+}
+
+.student-item:hover {
+    background-color: #f3f6fa;
+}
+
+/* riga con lo studente selezionato */
+.student-item:has(:checked) {
+    background-color: #f9fafc;
+}
+
+.student-avatar {
+    width: 2.6rem;
+    height: 2.6rem;
+    object-fit: cover;
+    background-color: var(--brand-soft);
+    border-radius: 50%;
+}
+
+.student-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--brand-navy-dark);
+}
+
+/* checkbox quadrata a destra: la spunta bianca è quella di Bootstrap, cambio solo forma e colori */
+.student-item .form-check-input {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0 0 0 auto;
+    cursor: pointer;
+    border-radius: 0.5rem;
+}
+
+.student-item .form-check-input:checked {
+    background-color: var(--brand-navy);
+    border-color: var(--brand-navy);
+}
+
+.student-item .form-check-input:focus {
+    border-color: var(--brand-navy);
+    box-shadow: 0 0 0 0.2rem rgba(22, 54, 95, 0.15);
+}
+
+/* ---------- pulsante ---------- */
+.btn-create {
+    --bs-btn-bg: var(--brand-navy);
+    --bs-btn-border-color: var(--brand-navy);
+    --bs-btn-hover-bg: var(--brand-navy-dark);
+    --bs-btn-hover-border-color: var(--brand-navy-dark);
+    --bs-btn-active-bg: var(--brand-navy-dark);
+    --bs-btn-active-border-color: var(--brand-navy-dark);
+    --bs-btn-disabled-bg: #b8c1cd;
+    --bs-btn-disabled-border-color: #b8c1cd;
+    --bs-btn-disabled-opacity: 1;
+    width: 100%;
+    height: 3.4rem;
+    margin: 0;
+    font-weight: 700;
+    border-radius: 0.9rem;
+    box-shadow: 0 8px 20px rgba(22, 54, 95, 0.25);
+}
+
+/* da disabilitato: grigio e senza ombra */
+.btn-create:disabled {
+    box-shadow: none;
+}
+
+/* ---------- schermi piccoli ---------- */
+@media (max-width: 575.98px) {
+    .modal-header {
+        padding: 1.5rem 1.25rem 0;
+    }
+
+    .modal-body {
+        padding: 1.25rem;
+    }
+
+    .modal-footer {
+        padding: 0 1.25rem 1.5rem;
+    }
+
+    .student-item {
+        padding: 0.75rem 1rem;
+    }
 }

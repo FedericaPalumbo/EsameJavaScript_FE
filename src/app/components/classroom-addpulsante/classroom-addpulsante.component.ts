@@ -15,7 +15,7 @@ export class ClassroomAddPulsanteComponent {
     onAdd = output<ClassroomFormEvent>();
 
     openModal() {
-        const modalRef = this.modalService.open(ClassroomFormComponent);
+        const modalRef = this.modalService.open(ClassroomFormComponent, { modalDialogClass: 'modal-brand' });
 
         modalRef.result.then(
             (result: ClassroomFormEvent) => {

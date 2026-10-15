@@ -1,1 +1,129 @@
-/* nessuno stile custom: la card usa solo le classi di Bootstrap */
+/* mobile: icona + testo sulla prima riga, pulsante a tutta larghezza sotto */
+.assignment-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    padding: 1.25rem;
+    font-family: var(--font-brand);
+    background-color: #fff;
+    border: 1px solid var(--brand-border);
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 16px rgba(22, 54, 95, 0.06);
+}
+
+.assignment-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--brand-navy);
+    background-color: #eef1f6;
+    border-radius: 0.9rem;
+}
+
+.assignment-body {
+    min-width: 0;
+}
+
+/* ---------- data e stato ---------- */
+.assignment-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--brand-muted);
+}
+
+.assignment-date,
+.assignment-done {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.assignment-done {
+    padding: 0.15rem 0.6rem;
+    color: #1f7a54;
+    line-height: 1.3;
+    background-color: #dff3ea;
+    border-radius: 0.6rem;
+}
+
+.assignment-title {
+    margin: 0.5rem 0 0.9rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--brand-navy-dark);
+    overflow-wrap: anywhere;
+}
+
+/* ---------- avanzamento della classe ---------- */
+.assignment-progress-text {
+    margin: 0 0 0.4rem;
+    font-size: 0.85rem;
+    color: var(--brand-muted);
+}
+
+/* ngb-progressbar è esso stesso l'elemento .progress: le variabili di Bootstrap vanno impostate qui */
+ngb-progressbar {
+    --bs-progress-height: 0.5rem;
+    --bs-progress-bg: var(--brand-soft);
+    --bs-progress-bar-bg: var(--brand-navy);
+    --bs-progress-border-radius: 999px;
+}
+
+/* ---------- pulsanti ---------- */
+.btn-detail,
+.btn-complete {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 3rem;
+    padding: 0 1.5rem;
+    font-family: var(--font-brand);
+    font-weight: 700;
+    border-radius: 0.9rem;
+}
+
+.btn-detail {
+    --bs-btn-color: var(--brand-navy);
+    --bs-btn-bg: #eef1f6;
+    --bs-btn-border-color: #eef1f6;
+    --bs-btn-hover-color: var(--brand-navy-dark);
+    --bs-btn-hover-bg: var(--brand-soft);
+    --bs-btn-hover-border-color: var(--brand-soft);
+    --bs-btn-active-color: var(--brand-navy-dark);
+    --bs-btn-active-bg: var(--brand-soft);
+    --bs-btn-active-border-color: var(--brand-soft);
+}
+
+.btn-complete {
+    --bs-btn-bg: var(--brand-navy);
+    --bs-btn-border-color: var(--brand-navy);
+    --bs-btn-hover-bg: var(--brand-navy-dark);
+    --bs-btn-hover-border-color: var(--brand-navy-dark);
+    --bs-btn-active-bg: var(--brand-navy-dark);
+    --bs-btn-active-border-color: var(--brand-navy-dark);
+    box-shadow: 0 8px 20px rgba(22, 54, 95, 0.25);
+}
+
+/* da md in su: icona | testo | pulsante sulla stessa riga */
+@media (min-width: 768px) {
+    .assignment-card {
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        padding: 1.5rem 1.75rem;
+        gap: 1.25rem;
+    }
+
+    .btn-detail,
+    .btn-complete {
+        grid-column: auto;
+    }
+}

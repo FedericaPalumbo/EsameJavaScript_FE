@@ -1,21 +1,54 @@
-<div class="card mt-2">
-    <div class="card-body">
-        <h5 class="card-title fw-normal">{{ assignment().title }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{ assignment().createdAt | date: 'longDate' }}</h6>
-        <p class="card-text mb-1">Completata da {{ assignment().completedCount }}/{{ assignment().studentsCount }}
-            studenti</p>
-        <ngb-progressbar type="success" [value]="assignment().completedCount" [max]="assignment().studentsCount" />
-        @if (assignment().completed) {
-        <p class="card-text text-success mt-2 mb-0">
-            Hai completato questa attività@if (assignment().completedAt) { il {{ assignment().completedAt | date:
-            'longDate' }}}
-        </p>
-        }
-        <a class="btn btn-link px-0" *ifRole="'teacher'" (click)="goToDetail()">studenti</a>
+<article class="assignment-card">
+    <div class="assignment-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+        </svg>
     </div>
+
+    <div class="assignment-body">
+        <div class="assignment-meta">
+            <span class="assignment-date">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                </svg>
+                {{ assignment().createdAt | date: 'longDate' }}
+            </span>
+            @if (assignment().completed) {
+            <span class="assignment-done">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5" />
+                </svg>
+                Completata@if (assignment().completedAt) { il {{ assignment().completedAt | date: 'longDate' }}}
+            </span>
+            }
+        </div>
+
+        <h3 class="assignment-title">{{ assignment().title }}</h3>
+
+        <p class="assignment-progress-text">Completata da {{ assignment().completedCount }}/{{
+            assignment().studentsCount }} studenti</p>
+        <ngb-progressbar [value]="assignment().completedCount" [max]="assignment().studentsCount" />
+    </div>
+
+    <button type="button" class="btn btn-detail" *ifRole="'teacher'" (click)="goToDetail()">
+        Studenti
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6" />
+        </svg>
+    </button>
+
     @if (!assignment().completed) {
-    <div class="card-footer text-muted text-end" *ifRole="'student'">
-        <button class="btn btn-primary" (click)="complete()">Completa</button>
-    </div>
+    <button type="button" class="btn btn-primary btn-complete" *ifRole="'student'" (click)="complete()">
+        Completa
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5" />
+        </svg>
+    </button>
     }
-</div>
+</article>

@@ -141,4 +141,11 @@
     color: var(--brand-navy);
     background-color: #eef1f6;
     border-radius: 50%;
+    transition: color 0.15s, background-color 0.15s;
+}
+
+/* con il mouse sulla card la freccia diventa blu con il chevron bianco */
+.class-card:hover .class-arrow {
+    color: #fff;
+    background-color: var(--brand-navy);
 }

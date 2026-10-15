@@ -3,7 +3,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject, catchError, combineLatest, EMPTY, map, of, switchMap, take, tap } from 'rxjs';
+import { Assignment, AssignmentStudent } from '../../entities';
 import { AssignmentService } from '../../services/assignment.service';
+import { AuthService } from '../../services/auth.service';
+import { ClassroomService } from '../../services/classroom.service';
 import { AssignmentItemComponent } from '../../components/assignment-item/assignment-item.component';
 import { AssignmentAddPulsanteComponent } from '../../components/assignment-addpulsante/assignment-addpulsante.component';
 import { AssignmentFormEvent } from '../../components/assignment-form/assignment-form.component';
@@ -36,6 +39,8 @@ export class AssignmentListComponent {
     protected activatedRoute = inject(ActivatedRoute);
     protected router = inject(Router);
     protected assignmentSrv = inject(AssignmentService);
+    protected classroomSrv = inject(ClassroomService);
+    protected authSrv = inject(AuthService);
 
     errorMessage = signal<string | null>(null);
 
@@ -62,9 +67,65 @@ export class AssignmentListComponent {
         )
     );
 
-    // relativeTo: aggiunge assignments/:id all'url corrente (/classrooms/:id)
-    navigateToDetail(id: string) {
-        this.router.navigate(['assignments', id], { relativeTo: this.activatedRoute });
+    // il backend non ha un GET della singola classe: la cerco nella lista delle classi dell'utente
+    classroom$ = this.classroomId$.pipe(
+        switchMap(classroomId => this.classroomSrv.find()
+            .pipe(
+                map(classrooms => classrooms.find(classroom => classroom.id === classroomId)),
+                catchError(() => of(undefined))
+            )
+        )
+    );
+
+    // ordine scelto nel menu: prima le più recenti o prima le meno recenti
+    order = signal<'recent' | 'oldest'>('recent');
+
+    sortedAssignments(assignments: Assignment[]) {
+        const sign = this.order() === 'recent' ? -1 : 1;
+        return [...assignments].sort((a, b) => sign * (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()));
+    }
+
+    // numeri della barra delle statistiche. "Da completare": per lo studente sono le sue attività
+    // non ancora completate, per il docente i completamenti che mancano in tutta la classe
+    statsOf(assignments: Assignment[]) {
+        const total = assignments.reduce((sum, a) => sum + a.studentsCount, 0);
+        const done = assignments.reduce((sum, a) => sum + a.completedCount, 0);
+        const isStudent = this.authSrv.currentUser()?.role === 'student';
+        return {
+            count: assignments.length,
+            // senza attività (o senza studenti) non c'è niente da completare: 100%, non 0%
+            percent: total ? Math.round(done / total * 100) : 100,
+            pending: isStudent ? assignments.filter(a => !a.completed).length : total - done,
+        };
+    }
+
+    // attività aperta dal docente (una sola alla volta) e studenti caricati per quella attività
+    openId = signal<string | null>(null);
+    students = signal<AssignmentStudent[] | null>(null);
+
+    // il docente apre un'attività (chiudendo quella aperta prima) o richiude quella già aperta
+    toggleDetail(id: string) {
+        if (this.openId() === id) {
+            this.openId.set(null);
+            return;
+        }
+        this.openId.set(id);
+        this.students.set(null);
+        this.classroomId$
+            .pipe(
+                take(1),
+                switchMap(classroomId => this.assignmentSrv.getById(classroomId, id)),
+                catchError(response => {
+                    this.handleError(response);
+                    return EMPTY;
+                })
+            )
+            .subscribe(detail => {
+                // se nel frattempo il docente ha aperto un'altra attività, questa risposta non serve più
+                if (this.openId() === id) {
+                    this.students.set(detail.students);
+                }
+            });
     }
 
     // il docente crea l'attività dal modal, poi la lista viene ricaricata
@@ -105,7 +166,7 @@ export class AssignmentListComponent {
             });
     }
 
-    // errori comuni a find, create e complete
+    // errori comuni a find, getById, create e complete
     private handleError(response: HttpErrorResponse) {
         if (response.status === 404) {
             // replaceUrl: la pagina non valida non resta nella cronologia, il tasto indietro non ci riporta qui
