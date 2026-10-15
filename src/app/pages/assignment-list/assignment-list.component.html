@@ -45,7 +45,7 @@
                 <span class="stat-value">{{ stats.percent }}%</span>
                 <span class="stat-label">Completamento medio</span>
             </div>
-            <div class="stat">
+            <div class="stat" *ifRole="'student'">
                 <span class="stat-value">{{ stats.pending }}</span>
                 <span class="stat-label">Da completare</span>
             </div>
