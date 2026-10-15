@@ -1,0 +1,172 @@
+/* Pagina centrata su sfondo blu (mobile-first, desktop da 768px).
+   56px = altezza della navbar */
+.welcome-page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 56px);
+    padding: 3rem 1.25rem;
+    overflow: hidden;
+    font-family: var(--font-brand);
+    text-align: center;
+    color: #fff;
+    background-color: var(--brand-navy);
+}
+
+/* cerchi decorativi in basso a destra (stessi di login e registrazione) */
+.welcome-page::before {
+    content: '';
+    position: absolute;
+    right: -225px;
+    bottom: -178px;
+    width: 450px;
+    height: 450px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    box-shadow: 0 0 0 57px rgba(255, 255, 255, 0.05), 0 0 0 114px rgba(255, 255, 255, 0.05);
+}
+
+.welcome-page>* {
+    position: relative;
+}
+
+/* ---------- eyebrow + titolo ---------- */
+/* fit-content: il blocco è largo quanto il titolo, così l'eyebrow parte dal suo bordo sinistro.
+   Su mobile il titolo va a capo su più righe e l'eyebrow resta centrato. */
+.welcome-head {
+    width: fit-content;
+    max-width: 100%;
+}
+
+.eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.eyebrow::before {
+    content: '';
+    width: 2rem;
+    height: 2px;
+    background-color: var(--brand-coral);
+}
+
+.welcome-title {
+    margin: 0;
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+}
+
+.welcome-accent {
+    color: #a9c4e0;
+}
+
+.welcome-text {
+    max-width: 36rem;
+    margin: 1.75rem 0 2.25rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- pulsanti ---------- */
+.welcome-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 26rem;
+}
+
+.welcome-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.4rem;
+    padding: 0 2rem;
+    font-weight: 700;
+    border-radius: 0.9rem;
+}
+
+.welcome-btn-primary {
+    --bs-btn-color: var(--brand-navy);
+    --bs-btn-bg: #fff;
+    --bs-btn-border-color: #fff;
+    --bs-btn-hover-color: var(--brand-navy-dark);
+    --bs-btn-hover-bg: var(--brand-soft);
+    --bs-btn-hover-border-color: var(--brand-soft);
+    --bs-btn-active-color: var(--brand-navy-dark);
+    --bs-btn-active-bg: var(--brand-soft);
+    --bs-btn-active-border-color: var(--brand-soft);
+}
+
+.welcome-btn-outline {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: rgba(255, 255, 255, 0.3);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: rgba(255, 255, 255, 0.1);
+    --bs-btn-hover-border-color: rgba(255, 255, 255, 0.5);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: rgba(255, 255, 255, 0.1);
+    --bs-btn-active-border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- note in fondo ---------- */
+.welcome-note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 0.75rem;
+    margin: 2rem 0 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.welcome-note span:first-child::before {
+    content: '\2713';
+    margin-right: 0.5rem;
+}
+
+.welcome-note span+span::before {
+    content: '\2022';
+    margin-right: 0.75rem;
+}
+
+/* ---------- desktop ---------- */
+@media (min-width: 768px) {
+    .welcome-title {
+        font-size: clamp(2.2rem, 4.6vw, 3.4rem);
+        white-space: nowrap;
+    }
+
+    /* "in ordine." va sempre sulla seconda riga, centrata sotto la prima */
+    .welcome-accent {
+        display: block;
+    }
+
+    .eyebrow {
+        justify-content: flex-start;
+    }
+
+    .welcome-actions {
+        flex-direction: row;
+        justify-content: center;
+        width: auto;
+        max-width: none;
+        gap: 1rem;
+    }
+}

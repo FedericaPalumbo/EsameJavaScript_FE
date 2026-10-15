@@ -5,9 +5,11 @@
 
 <div class="modal-body">
     <form [formGroup]="assignmentForm" (ngSubmit)="submit()">
-        <div class="mb-3">
-            <label class="form-label">Descrizione dell'attività</label>
-            <input type="text" class="form-control" placeholder="Es. Completare esercizio" formControlName="title"
+        <div>
+            <label class="form-label" for="assignment-title">Descrizione dell'attività</label>
+            <p class="section-hint">Spiega in poche parole cosa devono fare gli studenti.</p>
+            <input id="assignment-title" type="text" class="form-control" placeholder="Es. Completare esercizio"
+                formControlName="title"
                 [class.is-invalid]="assignmentForm.controls.title.invalid && assignmentForm.controls.title.touched">
             <div class="invalid-feedback">La descrizione è obbligatoria</div>
         </div>
@@ -15,6 +17,6 @@
 </div>
 
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="assignmentForm.invalid">Crea
+    <button type="button" class="btn btn-primary btn-create" (click)="submit()" [disabled]="assignmentForm.invalid">Crea
         attività</button>
 </div>

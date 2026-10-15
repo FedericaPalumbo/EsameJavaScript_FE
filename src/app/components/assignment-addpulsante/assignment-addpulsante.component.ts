@@ -15,7 +15,7 @@ export class AssignmentAddPulsanteComponent {
     onAdd = output<AssignmentFormEvent>();
 
     openModal() {
-        const modalRef = this.modalService.open(AssignmentFormComponent);
+        const modalRef = this.modalService.open(AssignmentFormComponent, { modalDialogClass: 'modal-brand modal-brand-narrow' });
 
         modalRef.result.then(
             (result: AssignmentFormEvent) => {

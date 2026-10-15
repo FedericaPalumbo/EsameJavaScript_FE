@@ -1,15 +1,20 @@
-<div class="container mt-5">
-    <div class="row">
-        <div class="col col-lg-4 d-none d-lg-block"></div>
-
-        <div class="col col-lg-4 col-md-12 p-4">
-            <h2 class="text-primary">Benvenuto in ScuolaCollective!</h2>
-            <p class="text-muted mb-4">Accedi alla tua area personale</p>
-
-            <div class="d-grid gap-2">
-                <a class="btn btn-primary" routerLink="/login">Log in</a>
-                <a class="btn btn-outline-primary" routerLink="/register">Register</a>
-            </div>
-        </div>
+<div class="welcome-page">
+    <!-- eyebrow e titolo stanno nello stesso blocco: l'eyebrow parte dal bordo sinistro del titolo -->
+    <div class="welcome-head">
+        <div class="eyebrow">Uno spazio per la scuola</div>
+        <h1 class="welcome-title">Tutto ciò che serve alla tua classe, <span class="welcome-accent">in ordine.</span>
+        </h1>
     </div>
+
+    <p class="welcome-text">Attività, scadenze e progressi in un unico ambiente condiviso da docenti e studenti.</p>
+
+    <div class="welcome-actions">
+        <a class="btn welcome-btn welcome-btn-primary" routerLink="/register">Crea un account &rsaquo;</a>
+        <a class="btn welcome-btn welcome-btn-outline" routerLink="/login">Accedi</a>
+    </div>
+
+    <p class="welcome-note">
+        <span>Per docenti e studenti</span>
+        <span>Semplice da usare</span>
+    </p>
 </div>
